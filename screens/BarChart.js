@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ART, Dimensions, TouchableWithoutFeedback, Image} from 'react-native';
+//import Svg, { Path, G, Shape,Text } from 'react-native-svg'
+
 import resolveAssetSource from 'resolveAssetSource'
 import localImage from '../localImage.png'
 import localImage2 from '../localimage2.png'
@@ -8,13 +10,8 @@ import localImage2 from '../localimage2.png'
 const {
     Surface,
     Group,
-    Rectangle,
-    ClippingRectangle,
-    LinearGradient,
     Shape,
     Text,
-    Path,
-    Transform,
     Pattern
 } = ART;
 
@@ -49,10 +46,11 @@ const colours = {
 }
 
 const data = [
-    {frequency: 6, letter: 'a'},
-    {frequency: 3, letter: 'b'},
+    {frequency: 6, letter: 'capas'},
+    {frequency: 3, letter: 'fosiles'},
 
 ];
+
 
 const pattern = new  Pattern(resolveAssetSource(localImage),100,100,100,100)
 const pattern2 = new Pattern(resolveAssetSource(localImage2),100,100,100,100)
@@ -65,11 +63,13 @@ export default class Bar extends React.Component {
         this.drawLine = this.drawLine.bind(this);            
         this.getRandomColor = this.getRandomColor.bind(this);
         this.getSum = this.getSum.bind(this);
+
+        this.state = {
+            columnas : ['capas','fosiles']
+        }
     };
 
-    static navigationOptions = {
-    title: 'Columna',
-    };
+
 
     getRandomColor() {
         return '#' + Math.random().toString(16).substr(-6);
@@ -101,7 +101,7 @@ export default class Bar extends React.Component {
 
         const x = d3.scale.scaleBand()
             .rangeRound([0, width])
-            .domain(data.map(d => d.letter))
+            .domain(this.state.columnas)
 
         let maxFrequency = this.getSum(data);
 
@@ -180,16 +180,17 @@ export default class Bar extends React.Component {
         let columna = (data.map((d, i) => (
                                 <TouchableWithoutFeedback key={i} >
                                     <Shape
-                                        d={this.createBarChart(x('a'), y(d.frequency) - height, x.bandwidth(), height - y(d.frequency))}
+                                        d={this.createBarChart(x('capas'), y(d.frequency) - height, x.bandwidth(), height - y(d.frequency))}
                                         fill={pattern}
                                         >
                                     </Shape>
                                 </TouchableWithoutFeedback>
                             ))
-
             )
 
-
+        console.log(width);
+        console.log('Ahora');
+        console.log(x.bandwidth());
 
         return(
             <View>
@@ -218,7 +219,7 @@ export default class Bar extends React.Component {
                         <Group key={-1}>
                             <Shape d={bottomAxisD} stroke={colours.black} key="-1"/>
                                     <Group
-                                        x={x('a') + labelDx}
+                                        x={x('capas') + labelDx}
                                         y={0}
                                         key={3 + 1}
                                     >
@@ -292,7 +293,7 @@ export default class Bar extends React.Component {
                         <Group key={-6}>
                             <Shape d={upperAxisD} stroke={colours.black} key="-1"/>
                                     <Group
-                                        x={x('a') + labelDx}
+                                        x={x('capas') + labelDx}
                                         y={0}
                                         key={3 + 1}
                                     >
@@ -310,7 +311,7 @@ export default class Bar extends React.Component {
                         <Group key={-7}>
                             <Shape d={upper2AxisD} stroke={colours.black} key="-1"/>
                                     <Group
-                                        x={x('a') + labelDx}
+                                        x={x('capas') + labelDx}
                                         y={0}
                                         key={3 + 1}
                                     >
