@@ -23,7 +23,9 @@
     "react-native-art": "^1.0.0",
     "react-native-responsive-dimensions": "^2.0.1",
     "react-native-svg-uri": "^1.2.3",
-    "react-navigation": "^3.0.9"
+    "react-navigation": "^3.0.9",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",

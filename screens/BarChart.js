@@ -1,18 +1,24 @@
 import React from 'react';
-import { StyleSheet, View, ART, Dimensions, TouchableWithoutFeedback, Image} from 'react-native';
-//import Svg, { Path, G, Shape,Text } from 'react-native-svg'
+import { StyleSheet, View, ART, Dimensions, TouchableWithoutFeedback, Image, Button} from 'react-native';
+import Svg, { Path, G, Line } from 'react-native-svg'
 
 import resolveAssetSource from 'resolveAssetSource'
 import localImage from '../localImage.png'
 import localImage2 from '../localimage2.png'
 
+import { connect } from 'react-redux';
+
+import Columna from '../reducers.js';
+
+import * as actions from '../actions.js';
+
 
 const {
     Surface,
     Group,
+    Pattern,
     Shape,
     Text,
-    Pattern
 } = ART;
 
 import {
@@ -45,17 +51,18 @@ const colours = {
     brown: 'brown'
 }
 
+/*
 const data = [
     {frequency: 6, letter: 'capas'},
     {frequency: 3, letter: 'fosiles'},
 
 ];
-
+*/
 
 const pattern = new  Pattern(resolveAssetSource(localImage),100,100,100,100)
 const pattern2 = new Pattern(resolveAssetSource(localImage2),100,100,100,100)
 
-export default class Bar extends React.Component {
+class Bar extends React.Component {
 
     constructor(props) {
         super(props);
@@ -65,10 +72,10 @@ export default class Bar extends React.Component {
         this.getSum = this.getSum.bind(this);
 
         this.state = {
-            columnas : ['capas','fosiles']
+            columnas : this.props.columnas,
+            data: this.props.capas
         }
     };
-
 
 
     getRandomColor() {
@@ -87,53 +94,48 @@ export default class Bar extends React.Component {
         return path;
     }
 
-    getSum(data) {
+    getSum(datos) {
         let accum = 0 ;
-        data.map(d => accum = accum + d.frequency )
+        datos.map(d => accum = accum + d.frequency )
         return accum
     }
 
     render() {
         const screen = Dimensions.get('window');
         const margin = {top: 50, right: 25, bottom: 200, left: 25}
-        const width = screen.width - margin.left - margin.right
+        const width = screen.width - margin.right - margin.left
         const height = screen.height - margin.top - margin.bottom
 
         const x = d3.scale.scaleBand()
             .rangeRound([0, width])
-            .domain(this.state.columnas)
+            .domain(this.props.columnas)
 
-        let maxFrequency = this.getSum(data);
+        let maxFrequency = this.getSum(this.props.capas);
 
         let y = d3.scale.scaleLinear()
             .rangeRound([height, 0])
             .domain([0, maxFrequency+1])
 
-        const firstLetterX = x(data[0].letter)
-        const secondLetterX = x(data[1].letter)
-        const lastLetterX = x(data[data.length - 1].letter)
+        const firstLetterX = x(this.props.capas[0].letter)
+        const secondLetterX = x(this.props.capas[1].letter)
+        const lastLetterX = x(this.props.capas[this.props.capas.length - 1].letter)
         const labelDx = (secondLetterX - firstLetterX) / 2
 
-        const bottomAxis = [firstLetterX - labelDx, firstLetterX + labelDx, firstLetterX + labelDx*2, firstLetterX + labelDx*3]
+        const bottomAxis = ticks(0, width, labelDx)
         const upperAxis = [firstLetterX - labelDx, firstLetterX + labelDx, firstLetterX + labelDx*2, firstLetterX + labelDx*3]
 
-        let horizontalLine = (array, ) => (d3.shape.line()
-                                .x(d => d + labelDx)
-                                .y(() => 0)
-                                (array))
-
         let bottomAxisD = (d3.shape.line()
-                                .x(d => d + labelDx)
+                                .x(d => d )
                                 .y(() => 0)
                                 (bottomAxis))
         const upperAxisD = d3.shape.line()
-                                .x(d => d + labelDx)
+                                .x(d => d )
                                 .y(() =>  y(maxFrequency+1) -  height)
-                                (upperAxis)
+                                (bottomAxis)
         const upper2AxisD = d3.shape.line()
-                                .x(d => d + labelDx)
+                                .x(d => d )
                                 .y(() =>  y(maxFrequency) -  height)
-                                (upperAxis)
+                                (bottomAxis)
 
         /* 
             Arreglo soble el que se mapea para los puntos de corte con Y
@@ -145,12 +147,17 @@ export default class Bar extends React.Component {
             Retorna el path para una linea vertical posicionada en (x,y)
             donde x = xTranslation y y = las posiciones y sobre array
         */
-        let verticalLine = (array, xTranslation) => (
+        let leftAxisLine = (array, xTranslation) => (
                             d3.shape.line()
-                            .x(() => bottomAxis[0] + xTranslation)
+                            .x(() => xTranslation )
                             .y(d => y(d) - height)
                             (array)
                             )
+
+        let verticalLine = (array, xTranslation) => (
+                            leftAxisLine(array, xTranslation + x.bandwidth())
+                            )
+
         /*
             Sustituidas por vertical line, usando como argumentos:
                 array = leftAxis
@@ -177,7 +184,7 @@ export default class Bar extends React.Component {
         const labelDistance = 9
         const emptySpace = "";
 
-        let columna = (data.map((d, i) => (
+        let columna = (this.props.capas.map((d, i) => (
                                 <TouchableWithoutFeedback key={i} >
                                     <Shape
                                         d={this.createBarChart(x('capas'), y(d.frequency) - height, x.bandwidth(), height - y(d.frequency))}
@@ -188,18 +195,49 @@ export default class Bar extends React.Component {
                             ))
             )
 
+        let displayColumnas = (this.props.columnas.map((col) =>{ 
+                console.log(col);
+
+                return (
+                        <Group key={col} >
+                            <Shape stroke={colours.black} d={verticalLine(leftAxis, x(col))} key="-1"/>
+                            <Text
+                                          x={x(col) + 8}
+                                          y={y(maxFrequency+1) - height}
+                                          fill={colours.black}
+                                          font="14px helvetica"
+                                        >
+                                          {col.toString()}
+                                        </Text>
+
+                        </Group>
+
+        )})
+        )
+
         console.log(width);
         console.log('Ahora');
-        console.log(x.bandwidth());
-
+        console.log(`El bandwidth vale ${x.bandwidth()}`);
+        this.props.columnas.map((d)=>{console.log(`${d} -- ${x(d)}`)});
+        console.log(`El labelDx vale ${labelDx}`)
+        console.log(this.props.columnas)
         return(
             <View>
+            <Button
+              onPress={() => {
+                console.log(this.props.columnas);
+                this.props.addColumn('oiuytr87425852e');
+
+              }}
+              title="Press Me"
+            />
+
             <Image source={require('../localImage.png')} 
                                 style={{
                                     position:'absolute',
                                     left: margin.left+5,
                                     bottom: margin.bottom,
-                                    width: labelDx,
+                                    width: x.bandwidth()-5,
                                     height: height - y(6)
                                 }}
                                 />
@@ -208,7 +246,7 @@ export default class Bar extends React.Component {
                                     position:'absolute',
                                     left: margin.left+5,
                                     bottom: margin.bottom + height - y(6),
-                                    width: labelDx,
+                                    width: x.bandwidth()-5,
                                     height: height - y(3)
                                 }}
                                 />
@@ -235,7 +273,7 @@ export default class Bar extends React.Component {
                               
                         </Group>
                         <Group key={-2} >
-                            <Shape stroke={colours.black} d={verticalLine(leftAxis, labelDx)} key="-1"/>
+                            <Shape stroke={colours.black} d={leftAxisLine(leftAxis, 0)} key="-1"/>
                             {
                                 leftAxis.map((d, i) => (
                                     <Group x={0} y={y(d)-height} key={i + 1}>
@@ -254,42 +292,7 @@ export default class Bar extends React.Component {
                                 ))
                             }
                         </Group>
-                        <Group key={-3} >
-                            <Shape stroke={colours.black} d={verticalLine(leftAxis, labelDx*2 +5)} key="-1"/>
-                            <Text
-                                          x = {5}
-                                          y={y(maxFrequency+1) - height}
-                                          fill={colours.black}
-                                          font="14px helvetica"
-                                        >
-                                          Columna
-                                        </Text>
-
-                        </Group>
-                        <Group key={-4} >
-                            <Shape stroke={colours.black} d={verticalLine(leftAxis, labelDx*3 +5)} key="-1"/>
-                            <Text
-                                          x={labelDx + 8}
-                                          y={y(maxFrequency+1) - height}
-                                          fill={colours.black}
-                                          font="14px helvetica"
-                                        >
-                                          Fosil
-                                        </Text>
-
-                        </Group>
-                        <Group key={-5} >
-                            <Shape stroke={colours.black} d={rightAxisD} key="-1"/>
-                            <Text
-                                          x={labelDx*2 + 8}
-                                          y={y(maxFrequency+1) - height}
-                                          fill={colours.black}
-                                          font="14px helvetica"
-                                        >
-                                          Notas
-                                        </Text>
-
-                        </Group>
+                       {displayColumnas}
                         <Group key={-6}>
                             <Shape d={upperAxisD} stroke={colours.black} key="-1"/>
                                     <Group
@@ -340,8 +343,6 @@ export default class Bar extends React.Component {
 
                 </Group>
             </Surface>
-
-
             </View>
         )
     }
@@ -358,4 +359,26 @@ const styles = {
   }
 };
 
+const mapStateToProps = (state,ownProps) =>{
+/**
+using REDUX stores, it allows us to just access the reducer values       by going state.name. Notice how name is what is being exported in    the reducer above
+**/
+  return{
+    nombreColumna: state.nombreColumna,
+    columnas: state.columnas,
+    capas: state.capas,
+  }
+}
 
+const mapDispatchToProps = (dispatch) => {
+ return {
+   addColumn:(name)=>{
+    dispatch(actions.addColumn(name))
+   },
+   saveName:()=>{
+    dispatch(actions.saveName())
+   },
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Bar);
