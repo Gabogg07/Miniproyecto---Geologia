@@ -3,8 +3,8 @@ import { StyleSheet, View, ART, Dimensions, TouchableWithoutFeedback, Image, But
 import Svg, { Path, G, Line } from 'react-native-svg'
 
 import resolveAssetSource from 'resolveAssetSource'
-import localImage from '../localImage.png'
-import localImage2 from '../localimage2.png'
+//import localImage from '../localImage.png'
+//import localImage2 from '../localimage2.png'
 
 import { connect } from 'react-redux';
 
@@ -59,8 +59,8 @@ const data = [
 ];
 */
 
-const pattern = new  Pattern(resolveAssetSource(localImage),100,100,100,100)
-const pattern2 = new Pattern(resolveAssetSource(localImage2),100,100,100,100)
+//const pattern = new  Pattern(resolveAssetSource(localImage),100,100,100,100)
+//  const pattern2 = new Pattern(resolveAssetSource(localImage2),100,100,100,100)
 
 class Bar extends React.Component {
 
@@ -100,9 +100,44 @@ class Bar extends React.Component {
         return accum
     }
 
+    gatherLithography = (margin, height, width, x, y) => {
+        let accumFreq = 0 ;
+        let separadores=[];
+        let images= (this.props.capas.map((capa) =>{ 
+                accumFreq = accumFreq + capa.frequency
+                let img1 = "../" + capa.lithography + ".png";
+                //let simg1 = require(img1)
+                console.log(img1);
+
+                separadores.push(
+                    <Group key={capa.letter} y={y(accumFreq-capa.frequency)-height}>
+                                <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
+                                
+                    </Group>)
+
+                return (
+                    <Image 
+                            key = {capa.letter}
+                            source={require('../localImage.png')} 
+                            style={{
+                                position:'absolute',
+                                left: margin.left+5,
+                                bottom: margin.bottom  + height - y(accumFreq-capa.frequency),
+                                width: x.bandwidth()-5,
+                                height: height - y(capa.frequency)
+                            }}
+                    />
+                )
+            })
+        )
+
+        return [images,separadores]
+
+    } 
+
     render() {
         const screen = Dimensions.get('window');
-        const margin = {top: 50, right: 25, bottom: 200, left: 25}
+        const margin = {top: 50, right: 25, bottom: 200, left: 30}
         const width = screen.width - margin.right - margin.left
         const height = screen.height - margin.top - margin.bottom
 
@@ -184,20 +219,10 @@ class Bar extends React.Component {
         const labelDistance = 9
         const emptySpace = "";
 
-        let columna = (this.props.capas.map((d, i) => (
-                                <TouchableWithoutFeedback key={i} >
-                                    <Shape
-                                        d={this.createBarChart(x('capas'), y(d.frequency) - height, x.bandwidth(), height - y(d.frequency))}
-                                        fill={pattern}
-                                        >
-                                    </Shape>
-                                </TouchableWithoutFeedback>
-                            ))
-            )
+
 
         let displayColumnas = (this.props.columnas.map((col) =>{ 
                 console.log(col);
-
                 return (
                         <Group key={col} >
                             <Shape stroke={colours.black} d={verticalLine(leftAxis, x(col))} key="-1"/>
@@ -212,44 +237,26 @@ class Bar extends React.Component {
 
                         </Group>
 
-        )})
+            )})
         )
 
-        console.log(width);
-        console.log('Ahora');
-        console.log(`El bandwidth vale ${x.bandwidth()}`);
-        this.props.columnas.map((d)=>{console.log(`${d} -- ${x(d)}`)});
-        console.log(`El labelDx vale ${labelDx}`)
-        console.log(this.props.columnas)
+        
+        let dummy = this.gatherLithography(margin, height, width, x, y);
+        let imagenesCapa = dummy[0];
+        let lineasSeparadoras = dummy[1];
+
+
+
+        //console.log(width);
+        //console.log('Ahora');
+        //console.log(`El bandwidth vale ${x.bandwidth()}`);
+        //this.props.columnas.map((d)=>{console.log(`${d} -- ${x(d)}`)});
+        //console.log(`El labelDx vale ${labelDx}`)
+        //console.log(this.props.columnas)
         return(
             <View>
-            <Button
-              onPress={() => {
-                console.log(this.props.columnas);
-                this.props.addColumn('oiuytr87425852e');
 
-              }}
-              title="Press Me"
-            />
-
-            <Image source={require('../localImage.png')} 
-                                style={{
-                                    position:'absolute',
-                                    left: margin.left+5,
-                                    bottom: margin.bottom,
-                                    width: x.bandwidth()-5,
-                                    height: height - y(6)
-                                }}
-                                />
-            <Image source={require('../localimage2.png')} 
-                                style={{
-                                    position:'absolute',
-                                    left: margin.left+5,
-                                    bottom: margin.bottom + height - y(6),
-                                    width: x.bandwidth()-5,
-                                    height: height - y(3)
-                                }}
-                                />
+            {imagenesCapa}
 
             <Surface width={screen.width} height={screen.height}>
                 <Group x={margin.left} y={margin.top}>
@@ -281,7 +288,7 @@ class Bar extends React.Component {
                                         {(d != maxFrequency+1) && (
                                         <Text
                                             fill={colours.black}
-                                            x={-15}
+                                            x={-25}
                                             y={-labelDistance}
                                             font="18px helvetica"
                                         >
@@ -292,7 +299,9 @@ class Bar extends React.Component {
                                 ))
                             }
                         </Group>
-                       {displayColumnas}
+
+                        {displayColumnas}
+
                         <Group key={-6}>
                             <Shape d={upperAxisD} stroke={colours.black} key="-1"/>
                                     <Group
@@ -330,14 +339,7 @@ class Bar extends React.Component {
                               
                         </Group>
 
-                        <Group key={'LineaSeparadora'} y={y(6)-height}>
-                            <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
-
-                        </Group>
-                        <Group key={'LineaSeparadora2'} y={y(6)-height}>
-                            <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
-                            
-                        </Group>
+                        {lineasSeparadoras}
 
                     </Group>
 

@@ -1,4 +1,5 @@
 export const ADD_COLUMN = "ADD_COLUMN";
+export const ADD_LAYER = "ADD_LAYER";
 export const SAVE_NAME = "SAVE_NAME";
 
 /**

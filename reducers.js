@@ -11,10 +11,18 @@ const initialState = {
              {
               frequency: 6,
               letter: 'capas',
-              },{
+              lithography : 'localImage'
+            },{
               frequency: 3,
               letter: 'fosiles',
-              },
+              lithography : 'localImage'
+            },{
+              frequency: 10,
+              letter: 'popo',
+              lithography : 'localImage'
+            },
+
+
             ],
      isSaved: false
 }
@@ -37,6 +45,12 @@ in REDUX the state is immutable. You must always return a new one, which is why 
          ...state,
          nombreColumna:nuevo
       }
+    case constants.ADD_LAYER:
+      return {
+         ...state,
+         nombreColumna:nuevo
+      }
+
     case constants.SAVE_NAME:
       return {
            ...state, 
