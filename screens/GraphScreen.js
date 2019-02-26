@@ -21,7 +21,7 @@ class GraphScreen extends React.Component {
         return (
             <View>
               <TouchableWithoutFeedback onPress={()=>{
-                this.props.addColumn('Pupu')
+                this.props.addColumn('APKL')
                 console.log(this.props.columnas)
                 }
               }>

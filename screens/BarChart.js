@@ -165,7 +165,7 @@ class Bar extends React.Component {
                                 (bottomAxis))
         const upperAxisD = d3.shape.line()
                                 .x(d => d )
-                                .y(() =>  y(maxFrequency+1) -  height)
+                                .y(() =>  y(maxFrequency+20) -  height)
                                 (bottomAxis)
         const upper2AxisD = d3.shape.line()
                                 .x(d => d )
@@ -228,7 +228,7 @@ class Bar extends React.Component {
                             <Shape stroke={colours.black} d={verticalLine(leftAxis, x(col))} key="-1"/>
                             <Text
                                           x={x(col) + 8}
-                                          y={y(maxFrequency+1) - height}
+                                          y={y(maxFrequency+15) - height}
                                           fill={colours.black}
                                           font="14px helvetica"
                                         >

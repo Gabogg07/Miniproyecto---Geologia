@@ -13,7 +13,7 @@ const initialState = {
               letter: 'capas',
               lithography : 'localImage'
             },{
-              frequency: 3,
+              frequency: 12,
               letter: 'fosiles',
               lithography : 'localImage'
             },{
@@ -25,7 +25,7 @@ const initialState = {
 
             ],
      isSaved: false
-}
+} 
 
 /**
 This action part is the part that will "listen" for emitted actions. So the saveName and modifyName functions that we defined earlier will be handled in here. The action parameter is what is being returned (the type and payload) in the functions above.
