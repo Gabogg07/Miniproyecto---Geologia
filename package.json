@@ -22,6 +22,7 @@
     "react-cross-form": "^1.2.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-art": "^1.0.0",
+    "react-native-geolocation-service": "^2.0.0",
     "react-native-responsive-dimensions": "^2.0.1",
     "react-native-svg-uri": "^1.2.3",
     "react-navigation": "^3.0.9",
