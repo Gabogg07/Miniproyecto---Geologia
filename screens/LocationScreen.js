@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 
 export default class LoginScreen extends Component {
@@ -29,10 +30,23 @@ export default class LoginScreen extends Component {
     );
   };
 
+  fetchStorage = async (key) => {
+    try {
+        value = await AsyncStorage.getItem("foto");
+        console.log("Keys");
+        console.log(value);
+        if (value !== null) {
+          console.log(value);
+        } 
+      } catch (error) {
+        // Error retrieving data
+      }
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.findCoordinates}>
+        <TouchableOpacity onPress={()=>this.fetchStorage('foto')}>
           <Text style={styles.welcome}>Encontrar mis coordenadas?</Text>
           {this.state.location && (
             <View>

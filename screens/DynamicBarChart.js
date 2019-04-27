@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ART, Dimensions, TouchableWithoutFeedback, Image, Button} from 'react-native';
+import { StyleSheet, View, ART, Dimensions, TouchableWithoutFeedback, Image, Button, ScrollView} from 'react-native';
 import Svg, { Path, G, Line } from 'react-native-svg'
 
 import resolveAssetSource from 'resolveAssetSource'
@@ -7,6 +7,8 @@ import resolveAssetSource from 'resolveAssetSource'
 //import localImage2 from '../localimage2.png'
 
 import { connect } from 'react-redux';
+
+//import {ImagenesPatrones} from './imagenesPatrones.js'
 
 import Columna from '../reducers.js';
 
@@ -50,6 +52,8 @@ const colours = {
     blue: 'steelblue',
     brown: 'brown'
 }
+
+let imgimg1 = require('../Patrones/603.png')
 
 /*
 const data = [
@@ -96,7 +100,8 @@ class Bar extends React.Component {
 
     getSum(datos) {
         let accum = 0 ;
-        datos.map(d => accum = accum + d.frequency )
+        console.log(datos);
+        datos.map(d => accum = accum + d['frequency'] )
         return accum
     }
 
@@ -105,9 +110,9 @@ class Bar extends React.Component {
         let separadores=[];
         let images= (this.props.capas.map((capa) =>{ 
                 accumFreq = accumFreq + capa.frequency
-                let img1 = "../" + capa.lithography + ".png";
-                //let simg1 = require(img1)
-                console.log(img1);
+                let img1 = ImagenesPatrones[capa.lithography]
+                console.log('+++++++++++++++++++++')
+                //console.log(img1);
 
                 separadores.push(
                     <Group key={capa.letter} y={y(accumFreq-capa.frequency)-height}>
@@ -118,14 +123,13 @@ class Bar extends React.Component {
                 return (
                     <Image 
                             key = {capa.letter}
-                            source={require('../localImage.png')} 
+                            source={img1} 
                             style={{
                                 position:'absolute',
                                 left: margin.left+5,
                                 bottom: margin.bottom  + height - y(accumFreq-capa.frequency),
                                 width: x.bandwidth()-5,
                                 height: height - y(capa.frequency),
-                                resizeMode: "stretch"
                             }}
                     />
                 )
@@ -133,10 +137,42 @@ class Bar extends React.Component {
         )
 
         return [images,separadores]
-
     } 
+    /***
+    gatherColumnValues(height, x, y, verticalLine, leftAxis, maxFrequency) =>{
+        this.props.columnas.map((columna)=>{
+
+        })
+    }***/
+
+    gatherNotes = (height, x, y, verticalLine, leftAxis, maxFrequency) => {
+        let accumFreq = 0 ;
+        let separadores = [];
+        let notes = (this.props.capas.map((capa) =>{ 
+            accumFreq = accumFreq + capa.frequency
+
+            separadores.push(
+                <Group key={'notas'} >
+                    <Shape stroke={colours.black} d={verticalLine(leftAxis, x('notas'))} key="-1"/>
+                    <Text
+                      x={x('notas') + 8}
+                      y={y(accumFreq - capa.frequency)- height -20}
+                      fill={colours.black}
+                      font="14px helvetica"
+                    >
+                      {capa.note}
+                    </Text>
+                </Group>
+            )
+        }))
+        return separadores
+    }
 
     render() {
+        console.log("ACA VIENE ---------")
+        console.log(this.props.capas)
+        console.log("ACA MURIO ---------")
+
         const screen = Dimensions.get('window');
         const margin = {top: 50, right: 25, bottom: 200, left: 30}
         const width = screen.width - margin.right - margin.left
@@ -153,7 +189,7 @@ class Bar extends React.Component {
             .domain([0, maxFrequency+1])
 
         const firstLetterX = x(this.props.capas[0].letter)
-        const secondLetterX = x(this.props.capas[1].letter)
+        const secondLetterX = x(this.props.capas[0].letter)
         const lastLetterX = x(this.props.capas[this.props.capas.length - 1].letter)
         const labelDx = (secondLetterX - firstLetterX) / 2
 
@@ -166,7 +202,7 @@ class Bar extends React.Component {
                                 (bottomAxis))
         const upperAxisD = d3.shape.line()
                                 .x(d => d )
-                                .y(() =>  y(maxFrequency+20) -  height)
+                                .y(() =>  y(maxFrequency+1))
                                 (bottomAxis)
         const upper2AxisD = d3.shape.line()
                                 .x(d => d )
@@ -177,7 +213,7 @@ class Bar extends React.Component {
             Arreglo soble el que se mapea para los puntos de corte con Y
             ticks (inicio, fin, saltos)
         */
-        const leftAxis = ticks(0, maxFrequency+1, maxFrequency)
+        const leftAxis = ticks(0, maxFrequency+1, (maxFrequency+1/4))
 
         /*
             Retorna el path para una linea vertical posicionada en (x,y)
@@ -229,7 +265,7 @@ class Bar extends React.Component {
                             <Shape stroke={colours.black} d={verticalLine(leftAxis, x(col))} key="-1"/>
                             <Text
                                           x={x(col) + 8}
-                                          y={y(maxFrequency+15) - height}
+                                          y={y(maxFrequency)- height - 20}
                                           fill={colours.black}
                                           font="14px helvetica"
                                         >
@@ -245,7 +281,7 @@ class Bar extends React.Component {
         let dummy = this.gatherLithography(margin, height, width, x, y);
         let imagenesCapa = dummy[0];
         let lineasSeparadoras = dummy[1];
-
+        let notes = this.gatherNotes(height, x, y, verticalLine, leftAxis, maxFrequency);
 
 
         //console.log(width);
@@ -255,13 +291,14 @@ class Bar extends React.Component {
         //console.log(`El labelDx vale ${labelDx}`)
         //console.log(this.props.columnas)
         return(
-            <View>
+            <ScrollView horizontal maximumZoomScale={5} minimumZoomScale={0.8}>
 
             {imagenesCapa}
 
             <Surface width={screen.width} height={screen.height}>
                 <Group x={margin.left} y={margin.top}>
                     <Group x={0} y={height}>
+                        {/*
                         <Group key={-1}>
                             <Shape d={bottomAxisD} stroke={colours.black} key="-1"/>
                                     <Group
@@ -280,6 +317,8 @@ class Bar extends React.Component {
                                     </Group>
                               
                         </Group>
+                        */}
+                        {/*Eje Y con los numeros*/}
                         <Group key={-2} >
                             <Shape stroke={colours.black} d={leftAxisLine(leftAxis, 0)} key="-1"/>
                             {
@@ -301,52 +340,24 @@ class Bar extends React.Component {
                             }
                         </Group>
 
+                        <Group key={'Linea superior de titulos'} y={y(maxFrequency+1)-height}>
+                                <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
+                                
+                        </Group>
+                        <Group key={'Subrayado de titulos'} y={y(maxFrequency)-height}>
+                                <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
+                                
+                        </Group>
+
                         {displayColumnas}
 
-                        <Group key={-6}>
-                            <Shape d={upperAxisD} stroke={colours.black} key="-1"/>
-                                    <Group
-                                        x={x('capas') + labelDx}
-                                        y={0}
-                                        key={3 + 1}
-                                    >
-                                        <Shape d={this.drawLine(0, notch)}  stroke={colours.black}/>
-                                        <Text
-                                          y={labelDistance}
-                                          fill={colours.black}
-                                          font="25px helvetica"
-                                        >
-                                          {emptySpace}
-                                        </Text>
-                                    </Group>
-                              
-                        </Group>
-                        <Group key={-7}>
-                            <Shape d={upper2AxisD} stroke={colours.black} key="-1"/>
-                                    <Group
-                                        x={x('capas') + labelDx}
-                                        y={0}
-                                        key={3 + 1}
-                                    >
-                                        <Shape d={this.drawLine(0, notch)}  stroke={colours.black}/>
-                                        <Text
-                                          y={labelDistance}
-                                          fill={colours.black}
-                                          font="25px helvetica"
-                                        >
-                                          {emptySpace}
-                                        </Text>
-                                    </Group>
-                              
-                        </Group>
-
                         {lineasSeparadoras}
+                        {notes}
 
                     </Group>
-
                 </Group>
             </Surface>
-            </View>
+            </ScrollView>
         )
     }
 }
@@ -385,3 +396,103 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Bar);
+
+const ImagenesPatrones = {
+    601: require('../Patrones/601.png'),
+    603: require('../Patrones/603.png'),
+    605: require('../Patrones/605.png'),
+    607: require('../Patrones/607.png'),
+    608: require('../Patrones/608.png'),
+    609: require('../Patrones/609.png'),
+    611: require('../Patrones/611.png'),
+    612: require('../Patrones/612.png'),
+    613: require('../Patrones/613.png'),
+    614: require('../Patrones/614.png'),
+    616: require('../Patrones/616.png'),
+    617: require('../Patrones/617.png'),
+    618: require('../Patrones/618.png'),
+    619: require('../Patrones/619.png'),
+    620: require('../Patrones/620.png'),
+    621: require('../Patrones/621.png'),
+    622: require('../Patrones/622.png'),
+    623: require('../Patrones/623.png'),
+    624: require('../Patrones/624.png'),
+    625: require('../Patrones/625.png'),
+    626: require('../Patrones/626.png'),
+    627: require('../Patrones/627.png'),
+    628: require('../Patrones/628.png'),
+    629: require('../Patrones/629.png'),
+    630: require('../Patrones/630.png'),
+    631: require('../Patrones/631.png'),
+    632: require('../Patrones/632.png'),
+    633: require('../Patrones/633.png'),
+    634: require('../Patrones/634.png'),
+    635: require('../Patrones/635.png'),
+    636: require('../Patrones/636.png'),
+    637: require('../Patrones/637.png'),
+    638: require('../Patrones/638.png'),
+    639: require('../Patrones/639.png'),
+    640: require('../Patrones/640.png'),
+    641: require('../Patrones/641.png'),
+    642: require('../Patrones/642.png'),
+    643: require('../Patrones/643.png'),
+    644: require('../Patrones/644.png'),
+    645: require('../Patrones/645.png'),
+    646: require('../Patrones/646.png'),
+    647: require('../Patrones/647.png'),
+    648: require('../Patrones/648.png'),
+    649: require('../Patrones/649.png'),
+    651: require('../Patrones/651.png'),
+    652: require('../Patrones/652.png'),
+    653: require('../Patrones/653.png'),
+    654: require('../Patrones/654.png'),
+    655: require('../Patrones/655.png'),
+    656: require('../Patrones/656.png'),
+    657: require('../Patrones/657.png'),
+    658: require('../Patrones/658.png'),
+    659: require('../Patrones/659.png'),
+    660: require('../Patrones/660.png'),
+    661: require('../Patrones/661.png'),
+    662: require('../Patrones/662.png'),
+    663: require('../Patrones/663.png'),
+    664: require('../Patrones/664.png'),
+    665: require('../Patrones/665.png'),
+    666: require('../Patrones/666.png'),
+    667: require('../Patrones/667.png'),
+    668: require('../Patrones/668.png'),
+    669: require('../Patrones/669.png'),
+    670: require('../Patrones/670.png'),
+    671: require('../Patrones/671.png'),
+    672: require('../Patrones/672.png'),
+    674: require('../Patrones/674.png'),
+    676: require('../Patrones/676.png'),
+    677: require('../Patrones/677.png'),
+    681: require('../Patrones/681.png'),
+    684: require('../Patrones/684.png'),
+    701: require('../Patrones/701.png'),
+    702: require('../Patrones/702.png'),
+    703: require('../Patrones/703.png'),
+    704: require('../Patrones/704.png'),
+    705: require('../Patrones/705.png'),
+    706: require('../Patrones/706.png'),
+    707: require('../Patrones/707.png'),
+    708: require('../Patrones/708.png'),
+    709: require('../Patrones/709.png'),
+    710: require('../Patrones/710.png'),
+    711: require('../Patrones/711.png'),
+    712: require('../Patrones/712.png'),
+    713: require('../Patrones/713.png'),
+    714: require('../Patrones/714.png'),
+    715: require('../Patrones/715.png'),
+    716: require('../Patrones/716.png'),
+    717: require('../Patrones/717.png'),
+    718: require('../Patrones/718.png'),
+    720: require('../Patrones/720.png'),
+    722: require('../Patrones/722.png'),
+    729: require('../Patrones/729.png'),
+    731: require('../Patrones/731.png'),
+    732: require('../Patrones/732.png'),
+    733: require('../Patrones/733.png')
+}
+
+

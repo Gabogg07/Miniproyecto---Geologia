@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {View, Text, TouchableWithoutFeedback}  from 'react-native';
-import BarChart from './BarChart';
+import BarChart from './DynamicBarChart';
 
 import { connect } from 'react-redux';
 
@@ -20,13 +20,9 @@ class GraphScreen extends React.Component {
     render() {            
         return (
             <View>
-              <TouchableWithoutFeedback onPress={()=>{
-                this.props.addColumn('APKL')
-                console.log(this.props.columnas)
-                }
-              }>
-                <Text> {this.props.nombreColumna} </Text>
-              </TouchableWithoutFeedback>
+              <Text>
+              Nombre de la columna: {this.props.nombre}
+              </Text>
               <BarChart
               />   
             </View>
@@ -42,6 +38,8 @@ using REDUX stores, it allows us to just access the reducer values       by goin
     nombreColumna: state.nombreColumna,
     columnas: state.columnas,
     capas: state.capas,
+    layers: state.layers,
+    nombre: state.name
   }
 }
 

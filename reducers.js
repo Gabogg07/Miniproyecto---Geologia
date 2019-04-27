@@ -9,16 +9,16 @@ const initialState = {
      columnas:['capas','fosiles', 'notas'],
      capas: [
              {
-              frequency: 6,
-              letter: 'capas',
+              frequency: 4,
+              letter: 'capa1',
               lithography : 'localImage'
             },{
-              frequency: 12,
-              letter: 'fosiles',
+              frequency: 2,
+              letter: 'capa2',
               lithography : 'localImage'
             },{
-              frequency: 10,
-              letter: 'popo',
+              frequency: 1,
+              letter: 'capa3',
               lithography : 'localImage'
             },
 
@@ -56,8 +56,16 @@ in REDUX the state is immutable. You must always return a new one, which is why 
            ...state, 
            isSaved:!state.isSaved
        }
-      default:
-        return state
+
+    case constants.NEW_COLUMN:
+    console.log(action.payload.layers)
+      return {
+        ...state,
+        capas: action.payload.layers,
+        name: action.payload.name
+      }     
+    default:
+      return state
    }
 }
 export default Columna;

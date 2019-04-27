@@ -8,6 +8,10 @@ import SettingsScreen from '../screens/SettingsScreen';
 import GraphScreen from '../screens/GraphScreen';
 import LocationScreen from '../screens/LocationScreen';
 import CameraScreen from '../screens/CameraScreen';
+import GalleryScreen from '../screens/GalleryScreen';
+import FormScreen from '../screens/FormScreen';
+
+
 
 
 
@@ -29,12 +33,12 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LocationStack = createStackNavigator({
-  Location: LocationScreen,
+const FormStack = createStackNavigator({
+  Form: FormScreen,
 });
 
-LocationStack.navigationOptions = {
-  tabBarLabel: 'Locacion',
+FormStack.navigationOptions = {
+  tabBarLabel: 'Form',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -65,14 +69,32 @@ CameraStack.navigationOptions = {
   ),
 };
 
-
-
-
-const SettingsStack = createStackNavigator({
-  Settings: GraphScreen,
+const GalleryStack = createStackNavigator({
+  Gallery: GalleryScreen,
 });
 
-SettingsStack.navigationOptions = {
+GalleryStack.navigationOptions = {
+  tabBarLabel: 'Galeria',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+
+
+
+const GraphStack = createStackNavigator({
+  Graph: GraphScreen,
+});
+
+GraphStack.navigationOptions = {
   tabBarLabel: 'Columna',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -85,8 +107,9 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   CameraStack,
-  LocationStack,
-  SettingsStack,
+  FormStack,
+  GalleryStack,
+  GraphStack,
 });
 
 

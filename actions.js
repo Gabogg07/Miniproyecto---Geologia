@@ -1,6 +1,7 @@
 export const ADD_COLUMN = "ADD_COLUMN";
 export const ADD_LAYER = "ADD_LAYER";
 export const SAVE_NAME = "SAVE_NAME";
+export const NEW_COLUMN = "NEW_COLUMN"
 
 /**
 * This is the action we will call from our component whenever the user presses a button. Literally every letter that they will type, this action will be called with the new value in the text input field. Pay attention to the type and payload in this function. This is what we will use in the reducer to "modify" our model with the new values.
@@ -21,5 +22,15 @@ Also, normally this would call an api endpoint and all that jazz, but for brevit
 export function saveName(){
  return {
    type: SAVE_NAME
+ }
+}
+
+export function newColumn(name,layers){
+ return {
+   type: NEW_COLUMN,
+   payload:{
+   	name,
+   	layers
+   }
  }
 }
