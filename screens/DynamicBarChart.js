@@ -53,7 +53,6 @@ const colours = {
     brown: 'brown'
 }
 
-let imgimg1 = require('../Patrones/603.png')
 
 /*
 const data = [
@@ -112,7 +111,7 @@ class Bar extends React.Component {
                 accumFreq = accumFreq + capa.frequency
                 let img1 = ImagenesPatrones[capa.lithography]
                 console.log('+++++++++++++++++++++')
-                //console.log(img1);
+                console.log(accumFreq);
 
                 separadores.push(
                     <Group key={capa.letter} y={y(accumFreq-capa.frequency)-height}>
@@ -290,74 +289,77 @@ class Bar extends React.Component {
         //this.props.columnas.map((d)=>{console.log(`${d} -- ${x(d)}`)});
         //console.log(`El labelDx vale ${labelDx}`)
         //console.log(this.props.columnas)
+        // OJO: si agregamos un scrollview se descuadra el layout de las imagenes de imagenesCapa
         return(
-            <ScrollView horizontal maximumZoomScale={5} minimumZoomScale={0.8}>
+  
+                <View>
+                    {imagenesCapa}
 
-            {imagenesCapa}
+                    <Surface width={screen.width} height={screen.height}>
+                        <Group x={margin.left} y={margin.top}>
 
-            <Surface width={screen.width} height={screen.height}>
-                <Group x={margin.left} y={margin.top}>
-                    <Group x={0} y={height}>
-                        {/*
-                        <Group key={-1}>
-                            <Shape d={bottomAxisD} stroke={colours.black} key="-1"/>
-                                    <Group
-                                        x={x('capas') + labelDx}
-                                        y={0}
-                                        key={3 + 1}
-                                    >
-                                        <Shape d={this.drawLine(0, notch)}  stroke={colours.black}/>
-                                        <Text
-                                          y={labelDistance}
-                                          fill={colours.black}
-                                          font="25px helvetica"
-                                        >
-                                          {emptySpace}
-                                        </Text>
-                                    </Group>
-                              
+                            <Group x={0} y={height}>
+                                {/*
+                                <Group key={-1}>
+                                    <Shape d={bottomAxisD} stroke={colours.black} key="-1"/>
+                                            <Group
+                                                x={x('capas') + labelDx}
+                                                y={0}
+                                                key={3 + 1}
+                                            >
+                                                <Shape d={this.drawLine(0, notch)}  stroke={colours.black}/>
+                                                <Text
+                                                  y={labelDistance}
+                                                  fill={colours.black}
+                                                  font="25px helvetica"
+                                                >
+                                                  {emptySpace}
+                                                </Text>
+                                            </Group>
+                                      
+                                </Group>
+                                */}
+                                {/*Eje Y con los numeros*/}
+                                <Group key={-2} >
+                                    <Shape stroke={colours.black} d={leftAxisLine(leftAxis, 0)} key="-1"/>
+                                    {
+                                        leftAxis.map((d, i) => (
+                                            <Group x={0} y={y(d)-height} key={i + 1}>
+                                                <Shape d={this.drawLine(notch, 0)} stroke={colours.black}/>
+                                                {(d != maxFrequency+1) && (
+                                                <Text
+                                                    fill={colours.black}
+                                                    x={-25}
+                                                    y={-labelDistance}
+                                                    font="18px helvetica"
+                                                >
+                                                    {d + emptySpace}
+                                                </Text>
+                                                )}
+                                            </Group>
+                                        ))
+                                    }
+                                </Group>
+
+                                <Group key={'Linea superior de titulos'} y={y(maxFrequency+1)-height}>
+                                        <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
+                                        
+                                </Group>
+                                <Group key={'Subrayado de titulos'} y={y(maxFrequency)-height}>
+                                        <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
+                                        
+                                </Group>
+
+                                {displayColumnas}
+
+                                {lineasSeparadoras}
+                                {notes}
+
+                            </Group>
                         </Group>
-                        */}
-                        {/*Eje Y con los numeros*/}
-                        <Group key={-2} >
-                            <Shape stroke={colours.black} d={leftAxisLine(leftAxis, 0)} key="-1"/>
-                            {
-                                leftAxis.map((d, i) => (
-                                    <Group x={0} y={y(d)-height} key={i + 1}>
-                                        <Shape d={this.drawLine(notch, 0)} stroke={colours.black}/>
-                                        {(d != maxFrequency+1) && (
-                                        <Text
-                                            fill={colours.black}
-                                            x={-25}
-                                            y={-labelDistance}
-                                            font="18px helvetica"
-                                        >
-                                            {d + emptySpace}
-                                        </Text>
-                                        )}
-                                    </Group>
-                                ))
-                            }
-                        </Group>
+                    </Surface>
+                </View>
 
-                        <Group key={'Linea superior de titulos'} y={y(maxFrequency+1)-height}>
-                                <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
-                                
-                        </Group>
-                        <Group key={'Subrayado de titulos'} y={y(maxFrequency)-height}>
-                                <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
-                                
-                        </Group>
-
-                        {displayColumnas}
-
-                        {lineasSeparadoras}
-                        {notes}
-
-                    </Group>
-                </Group>
-            </Surface>
-            </ScrollView>
         )
     }
 }

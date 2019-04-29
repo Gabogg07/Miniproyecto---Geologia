@@ -114,6 +114,7 @@ export default class GalleryScreen extends Component {
     if(this.state.ready){
       return (
         <ScrollView style={styles.container}>
+          {this.state.imagenes}
           <TouchableHighlight onPress = {()=>this.refreshList()} >
             <View style={styles.optionButtons}>
               <Text style={styles.optionButtonsText}> 
@@ -121,7 +122,6 @@ export default class GalleryScreen extends Component {
               </Text>
             </View>
           </TouchableHighlight>
-          {this.state.imagenes}
         </ScrollView>
       );
     } else {
@@ -183,7 +183,6 @@ const styles = StyleSheet.create({
    optionButtons:{
     backgroundColor:'steelblue',
     borderRadius:5,
-    width: width*2/3,
     alignItems:'center',
     justifyContent:'center',
     textAlign:'center',

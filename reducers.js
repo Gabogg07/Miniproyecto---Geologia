@@ -11,15 +11,15 @@ const initialState = {
              {
               frequency: 4,
               letter: 'capa1',
-              lithography : 'localImage'
+              lithography : '603'
             },{
               frequency: 2,
               letter: 'capa2',
-              lithography : 'localImage'
+              lithography : '608'
             },{
               frequency: 1,
               letter: 'capa3',
-              lithography : 'localImage'
+              lithography : '617'
             },
 
 
