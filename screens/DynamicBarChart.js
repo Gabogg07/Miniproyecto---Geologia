@@ -21,6 +21,7 @@ const {
     Pattern,
     Shape,
     Text,
+    Rectangle
 } = ART;
 
 import {
@@ -50,7 +51,11 @@ import {
 const colours = {
     black: 'black',
     blue: 'steelblue',
-    brown: 'brown'
+    brown: 'brown',
+    red: 'red',
+    yellow: 'yellow',
+    orange: 'orange',
+    pink: 'pink'
 }
 
 
@@ -107,6 +112,8 @@ class Bar extends React.Component {
     gatherLithography = (margin, height, width, x, y) => {
         let accumFreq = 0 ;
         let separadores=[];
+        let colores=[];
+        let i = 0;
         let images= (this.props.capas.map((capa) =>{ 
                 accumFreq = accumFreq + capa.frequency
                 let img1 = ImagenesPatrones[capa.lithography]
@@ -118,6 +125,20 @@ class Bar extends React.Component {
                                 <Shape d={this.drawLine(width,0)}  stroke={colours.black} strokeWidth={3}/>
                                 
                     </Group>)
+                colores.push(
+                    <View style={{
+                                position:'absolute',
+                                left: margin.left+5,
+                                bottom: margin.bottom  + height - y(accumFreq-capa.frequency),
+                                width: x.bandwidth()-5,
+                                height: height - y(capa.frequency),
+                                backgroundColor:this.getRandomColor(),
+                                opacity:0.5
+                            }}>
+                    </View>
+
+                )
+                i = (i+1)%3 ; 
 
                 return (
                     <Image 
@@ -135,7 +156,7 @@ class Bar extends React.Component {
             })
         )
 
-        return [images,separadores]
+        return [images,separadores, colores]
     } 
     /***
     gatherColumnValues(height, x, y, verticalLine, leftAxis, maxFrequency) =>{
@@ -212,7 +233,17 @@ class Bar extends React.Component {
             Arreglo soble el que se mapea para los puntos de corte con Y
             ticks (inicio, fin, saltos)
         */
-        const leftAxis = ticks(0, maxFrequency+1, (maxFrequency+1/4))
+        //const leftAxis = ticks(0, maxFrequency+1, (maxFrequency+1)/3)
+        let leftAxis ;
+        if(maxFrequency <15){
+            leftAxis = ticks(0, maxFrequency+1, (maxFrequency+1)/2 )
+        } else {
+            if(maxFrequency > 100){
+                leftAxis = ticks(0, maxFrequency+1, (maxFrequency+1)/10 )
+            }else{
+                leftAxis = ticks(0, maxFrequency+1, (maxFrequency+1)/8)
+            }
+        }
 
         /*
             Retorna el path para una linea vertical posicionada en (x,y)
@@ -280,6 +311,7 @@ class Bar extends React.Component {
         let dummy = this.gatherLithography(margin, height, width, x, y);
         let imagenesCapa = dummy[0];
         let lineasSeparadoras = dummy[1];
+        let colores = dummy[2];
         let notes = this.gatherNotes(height, x, y, verticalLine, leftAxis, maxFrequency);
 
 
@@ -294,6 +326,7 @@ class Bar extends React.Component {
   
                 <View>
                     {imagenesCapa}
+                    {colores}
 
                     <Surface width={screen.width} height={screen.height}>
                         <Group x={margin.left} y={margin.top}>

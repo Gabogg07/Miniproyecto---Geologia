@@ -140,7 +140,6 @@ export default class GalleryScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#DCDCDC',
   },
   inputContainer: {
       borderBottomColor: '#F5FCFF',

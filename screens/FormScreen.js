@@ -26,6 +26,9 @@ import Columna from '../reducers.js';
 
 import * as actions from '../actions.js';
 
+import PickerModal from 'react-native-picker-modal-view';
+
+
 
 
 const screen = Dimensions.get('window');
@@ -39,15 +42,44 @@ class FormScreen extends Component {
 
     state = {
       ready: false,
+      dummy : 611,
       pickerValues: {},
       nameValues: {},
       heightValues: {},
-      noteValues: {}
+      noteValues: {},
+      selectedItem: {},
+      loading:true
+
     }
 
   componentWillMount(){
     this.fillPicker();
+    this.fillSecond();
   }
+
+  fillSecond = ()=>{
+    let data = []
+    let i = 0
+    Object.keys(Patrones).map((entry)=>{
+      data.push({
+        id: i,
+        Value: Patrones[entry],
+        Name: entry
+      })
+      i = i+ 1 ;
+    })
+
+    this.setState({
+      data,
+      loading:false
+    })
+  }
+
+	selected(selected) {
+		this.setState({
+			selectedItem: selected
+		})
+	}
 
   componentDidMount(){
     this.setState({
@@ -67,15 +99,31 @@ class FormScreen extends Component {
             this.storeNames(1, value)
           }}
           />
-          <Picker
-                mode="dialog"
-                style={{ margin:0}}
-                selectedValue={this.state.pickerValues[1]}
-                onValueChange={(itemValue, itemIndex) =>
-                this.storePickerValues(1, itemValue) }
-          >
-                {this.state.picker}
-          </Picker>
+          {/*
+          <Picker 
+            selectedValue={(this.state && this.state.pickerValues[1]) || 'a'}
+            onValueChange={(value) => {
+            let pick = this.state.pickerValues;
+            pick[1] = value;
+            this.setState({pickerValues: pick});
+          }} > 
+          {this.state.picker}
+          </Picker>*/}
+          {!this.state.loading &&(
+          <PickerModal
+              onSelected={(selected) => {
+                let values = this.state.pickerValues;
+                values[1] = selected
+                this.setState({pickerValues: values})
+              }}	
+              items={this.state.data}
+              selected={this.state.selectedItem}
+              selectPlaceholderText={'Choose one...'}
+              searchPlaceholderText={'Search...'}
+              requireSelection={true}
+              autoSort={true}
+              FlatListProps={{viewabilityConfig:{viewAreaCoveragePercentThreshold:50 }}}
+            />)}
            <Input
           placeholder='Espesor'
           label= 'Espesor'
@@ -103,6 +151,10 @@ class FormScreen extends Component {
     this.setState({
       picker : dummy,
     })
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
   }
 
   storePickerValues = (pickerID, value) => {
@@ -142,21 +194,21 @@ class FormScreen extends Component {
   setLayers = () => {
     let numLayers = Object.keys(this.state.pickerValues) ;
     let layers = [] ;
-    console.log("COMENZANDO ++++++++++");
-    console.log(numLayers)
-    console.log(this.state.pickerValues);
+    //console.log("COMENZANDO ++++++++++");
+    //console.log(numLayers)
+    //console.log(this.state.pickerValues);
     numLayers.map((i)=>{
-      console.log(i)
+      //console.log(i)
       layers.push({
         letter : this.state.nameValues[i],
-        lithography: this.state.pickerValues[i],
+        lithography: this.state.pickerValues[i].Value,
         frequency: this.state.heightValues[i],
         note: this.state.noteValues[i]
       })
     })
-    console.log('-----------------');
-    console.log(this.state.pickerValues[1]);
-    console.log('-----------------');
+    //console.log('-----------------');
+    //console.log(this.state.pickerValues[1]);
+    //console.log('-----------------');
 
     console.log(layers);
     this.props.newColumn(this.state.nombre, layers)
@@ -180,16 +232,32 @@ class FormScreen extends Component {
           this.storeNames(longitud, value)
         }}
         />
-        <Picker
-              note
-              mode="dropdown"
-              style={{margin:0}}
-              selectedValue={this.state.pickerValues[longitud]}
-              onValueChange={(itemValue, itemIndex) =>
-              this.storePickerValues(longitud, itemValue) }
-        >
-              {this.state.picker}
-        </Picker>
+        {/*
+        <Picker 
+          selectedValue={(this.state.pickerValues[longitud] && this.state.pickerValues[longitud]) || 601}
+          onValueChange={(value) => {
+          let pick = this.state.pickerValues;
+          pick[longitud] = value;
+          this.setState({pickerValues: pick});
+        }} >
+        {this.state.picker}
+        </Picker> 
+      */}
+       <PickerModal
+              onSelected={(selected) => {
+                let values = this.state.pickerValues;
+                values[longitud] = selected
+                this.setState({pickerValues: values})
+              }}	
+              items={this.state.data}
+              selected={this.state.selectedItem}
+              selectPlaceholderText={'Choose one...'}
+              searchPlaceholderText={'Search...'}
+              requireSelection={true}
+              autoSort={true}
+              FlatListProps={{viewabilityConfig:{viewAreaCoveragePercentThreshold:50 }}}
+        />
+            
         <Input
         placeholder='Espesor'
         label = 'Espesor'
@@ -217,6 +285,7 @@ class FormScreen extends Component {
   render() {
     return(
       <ScrollView>
+        
       <Input
         placeholder='Nombre de la columna'
         label = 'Nombre de la columna'
@@ -241,12 +310,15 @@ class FormScreen extends Component {
         <TouchableHighlight onPress= {()=> this.setLayers()}>
           <View style={styles.optionButtons}>
             <Text style={styles.optionButtonsText}> 
-              Usar Datos
+              Modificar Datos
             </Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight onPress= 
-          {()=> this.props.navigation.navigate('Graph')}>
+          {()=> {
+            this.setLayers();
+            this.props.navigation.navigate('Graph');
+          }}>
           <View style={styles.optionButtons}>
             <Text style={styles.optionButtonsText}> 
               Navegar a la Columna

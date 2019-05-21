@@ -8,15 +8,27 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
+import { Patrones } from '../codigo_patrones.js'
+
+import PickerModal from 'react-native-picker-modal-view';
+
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+    }
+
+  }
   static navigationOptions = {
     header: null,
   };
 
+  
   render() {
     return (
       <View style={styles.container}>

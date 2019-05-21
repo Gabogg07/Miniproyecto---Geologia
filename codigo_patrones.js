@@ -13,7 +13,6 @@ export const Patrones = {
 	'Calcareous siltstone': 617,
 	'Dolomitic siltstone': 618,
 	'Sandy shale' : 619,
-	'Arcilla': 620,
 	'Cherty shale': 621,
 	'Dolomitic shale': 622,
 	'Calcareous shale' :623,

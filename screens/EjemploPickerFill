@@ -1,0 +1,472 @@
+ [
+   {
+    "Name": "Gravel",
+    "Value": 601,
+    "id": 0,
+  },
+   {
+    "Name": "Crossbedded gravel",
+    "Value": 603,
+    "id": 1,
+  },
+   {
+    "Name": "Breccia",
+    "Value": 605,
+    "id": 2,
+  },
+   {
+    "Name": "Sandstone",
+    "Value": 607,
+    "id": 3,
+  },
+   {
+    "Name": "Bedded sand",
+    "Value": 608,
+    "id": 4,
+  },
+   {
+    "Name": "Crossbedded sand",
+    "Value": 609,
+    "id": 5,
+  },
+   {
+    "Name": "Ripple-bedded sand",
+    "Value": 611,
+    "id": 6,
+  },
+   {
+    "Name": "Shaly sandstone",
+    "Value": 612,
+    "id": 7,
+  },
+   {
+    "Name": "Calcareous sandstone",
+    "Value": 613,
+    "id": 8,
+  },
+   {
+    "Name": "Dolomitic sandstone",
+    "Value": 614,
+    "id": 9,
+  },
+   {
+    "Name": "Siltstone",
+    "Value": 616,
+    "id": 10,
+  },
+   {
+    "Name": "Calcareous siltstone",
+    "Value": 617,
+    "id": 11,
+  },
+   {
+    "Name": "Dolomitic siltstone",
+    "Value": 618,
+    "id": 12,
+  },
+   {
+    "Name": "Sandy shale",
+    "Value": 619,
+    "id": 13,
+  },
+   {
+    "Name": "Arcilla",
+    "Value": 620,
+    "id": 14,
+  },
+   {
+    "Name": "Cherty shale",
+    "Value": 621,
+    "id": 15,
+  },
+   {
+    "Name": "Dolomitic shale",
+    "Value": 622,
+    "id": 16,
+  },
+   {
+    "Name": "Calcareous shale",
+    "Value": 623,
+    "id": 17,
+  },
+   {
+    "Name": "Carbonaceous shale",
+    "Value": 624,
+    "id": 18,
+  },
+   {
+    "Name": "Oil shale",
+    "Value": 625,
+    "id": 19,
+  },
+   {
+    "Name": "Chalk",
+    "Value": 626,
+    "id": 20,
+  },
+   {
+    "Name": "Limestone",
+    "Value": 627,
+    "id": 21,
+  },
+   {
+    "Name": "Clastic limestone",
+    "Value": 628,
+    "id": 22,
+  },
+   {
+    "Name": "Fossiliferous limestone",
+    "Value": 629,
+    "id": 23,
+  },
+   {
+    "Name": "Nodular limestone",
+    "Value": 630,
+    "id": 24,
+  },
+   {
+    "Name": "Irregular limestone",
+    "Value": 631,
+    "id": 25,
+  },
+   {
+    "Name": "Crossbedded limestone",
+    "Value": 632,
+    "id": 26,
+  },
+   {
+    "Name": "Cherty crossbedded limestone",
+    "Value": 633,
+    "id": 27,
+  },
+   {
+    "Name": "Cherty and sandy crossbedded limestone",
+    "Value": 634,
+    "id": 28,
+  },
+   {
+    "Name": "Oolitic limestone",
+    "Value": 635,
+    "id": 29,
+  },
+   {
+    "Name": "Sandy limestone",
+    "Value": 636,
+    "id": 30,
+  },
+   {
+    "Name": "Silty limestone",
+    "Value": 637,
+    "id": 31,
+  },
+   {
+    "Name": "Argillaceous limestone",
+    "Value": 638,
+    "id": 32,
+  },
+   {
+    "Name": "Cherty limestone",
+    "Value": 639,
+    "id": 33,
+  },
+   {
+    "Name": "Limy dolomite",
+    "Value": 641,
+    "id": 34,
+  },
+   {
+    "Name": "Dolomite",
+    "Value": 642,
+    "id": 35,
+  },
+   {
+    "Name": "Crossbedded dolomite",
+    "Value": 643,
+    "id": 36,
+  },
+   {
+    "Name": "Oolitic dolostone",
+    "Value": 644,
+    "id": 37,
+  },
+   {
+    "Name": "Sandy dolostone",
+    "Value": 645,
+    "id": 38,
+  },
+   {
+    "Name": "Silty dolostone",
+    "Value": 646,
+    "id": 39,
+  },
+   {
+    "Name": "Shaly dolostone",
+    "Value": 647,
+    "id": 40,
+  },
+   {
+    "Name": "Cherty dolostone",
+    "Value": 648,
+    "id": 41,
+  },
+   {
+    "Name": "Bedded chert",
+    "Value": 649,
+    "id": 42,
+  },
+   {
+    "Name": "Fossiliferous bedded chert",
+    "Value": 651,
+    "id": 43,
+  },
+   {
+    "Name": "Fossiliferous rock",
+    "Value": 652,
+    "id": 44,
+  },
+   {
+    "Name": "Diatomaceous rock",
+    "Value": 653,
+    "id": 45,
+  },
+   {
+    "Name": "Subgraywacke",
+    "Value": 654,
+    "id": 46,
+  },
+   {
+    "Name": "Crossbedded subgraywacke",
+    "Value": 655,
+    "id": 47,
+  },
+   {
+    "Name": "Ripple-bedded subgraywacke",
+    "Value": 656,
+    "id": 48,
+  },
+   {
+    "Name": "Peat",
+    "Value": 657,
+    "id": 49,
+  },
+   {
+    "Name": "Coal",
+    "Value": 658,
+    "id": 50,
+  },
+   {
+    "Name": "Impure coal",
+    "Value": 659,
+    "id": 51,
+  },
+   {
+    "Name": "Underclay",
+    "Value": 660,
+    "id": 52,
+  },
+   {
+    "Name": "Flint clay",
+    "Value": 661,
+    "id": 53,
+  },
+   {
+    "Name": "Bentonite",
+    "Value": 662,
+    "id": 54,
+  },
+   {
+    "Name": "Glauconite",
+    "Value": 663,
+    "id": 55,
+  },
+   {
+    "Name": "Limonite",
+    "Value": 664,
+    "id": 56,
+  },
+   {
+    "Name": "Siderite",
+    "Value": 665,
+    "id": 57,
+  },
+   {
+    "Name": "Nodular Rock",
+    "Value": 666,
+    "id": 58,
+  },
+   {
+    "Name": "Gypsum",
+    "Value": 667,
+    "id": 59,
+  },
+   {
+    "Name": "Salt",
+    "Value": 668,
+    "id": 60,
+  },
+   {
+    "Name": "Interbedded sandstone",
+    "Value": 669,
+    "id": 61,
+  },
+   {
+    "Name": "Interbedded sandstone and shale",
+    "Value": 670,
+    "id": 62,
+  },
+   {
+    "Name": "Interbedded Ripple-bedded Sandstone",
+    "Value": 671,
+    "id": 63,
+  },
+   {
+    "Name": "Interbedded shale and silty limestone",
+    "Value": 672,
+    "id": 64,
+  },
+   {
+    "Name": "Interbedded shale and limestone",
+    "Value": 674,
+    "id": 65,
+  },
+   {
+    "Name": "Interbedded silty limestone",
+    "Value": 676,
+    "id": 66,
+  },
+   {
+    "Name": "Interbedded limestone and shale",
+    "Value": 677,
+    "id": 67,
+  },
+   {
+    "Name": "Till or diamicon",
+    "Value": 681,
+    "id": 68,
+  },
+   {
+    "Name": "Loess",
+    "Value": 684,
+    "id": 69,
+  },
+   {
+    "Name": "Metamorphism",
+    "Value": 701,
+    "id": 70,
+  },
+   {
+    "Name": "Quartzite",
+    "Value": 702,
+    "id": 71,
+  },
+   {
+    "Name": "Slate",
+    "Value": 703,
+    "id": 72,
+  },
+   {
+    "Name": "Gneissoid granite",
+    "Value": 704,
+    "id": 73,
+  },
+   {
+    "Name": "Schist",
+    "Value": 705,
+    "id": 74,
+  },
+   {
+    "Name": "Contorted schist",
+    "Value": 706,
+    "id": 75,
+  },
+   {
+    "Name": "Schist and gneiss",
+    "Value": 707,
+    "id": 76,
+  },
+   {
+    "Name": "Gneiss",
+    "Value": 708,
+    "id": 77,
+  },
+   {
+    "Name": "Contorted gneiss",
+    "Value": 709,
+    "id": 78,
+  },
+   {
+    "Name": "Soapstone",
+    "Value": 710,
+    "id": 79,
+  },
+   {
+    "Name": "Tuffaceous rock",
+    "Value": 711,
+    "id": 80,
+  },
+   {
+    "Name": "Crystall tulff",
+    "Value": 712,
+    "id": 81,
+  },
+   {
+    "Name": "Devitrified tuff",
+    "Value": 713,
+    "id": 82,
+  },
+   {
+    "Name": "Volcanic Breccia and tuff",
+    "Value": 714,
+    "id": 83,
+  },
+   {
+    "Name": "Volcanic Breccia and agglomerate",
+    "Value": 715,
+    "id": 84,
+  },
+   {
+    "Name": "Zeolitic Rock",
+    "Value": 716,
+    "id": 85,
+  },
+   {
+    "Name": "Basaltic flows",
+    "Value": 717,
+    "id": 86,
+  },
+   {
+    "Name": "Granite",
+    "Value": 718,
+    "id": 87,
+  },
+   {
+    "Name": "Banded igneous rock",
+    "Value": 720,
+    "id": 88,
+  },
+   {
+    "Name": "Igneous Rock",
+    "Value": 722,
+    "id": 89,
+  },
+   {
+    "Name": "Porphyritic Rock",
+    "Value": 729,
+    "id": 90,
+  },
+   {
+    "Name": "Vitropyre",
+    "Value": 731,
+    "id": 91,
+  },
+   {
+    "Name": "Quartz",
+    "Value": 732,
+    "id": 92,
+  },
+   {
+    "Name": "Ore",
+    "Value": 733,
+    "id": 93,
+  },
+ ]
