@@ -132,7 +132,7 @@ class Bar extends React.Component {
                                 bottom: margin.bottom  + height - y(accumFreq-capa.frequency),
                                 width: x.bandwidth()-5,
                                 height: height - y(capa.frequency),
-                                backgroundColor:this.getRandomColor(),
+                                backgroundColor:capa.color,
                                 opacity:0.5
                             }}>
                     </View>

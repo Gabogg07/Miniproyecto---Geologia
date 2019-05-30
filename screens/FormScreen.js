@@ -19,6 +19,7 @@ import { Input } from 'react-native-elements';
 import { Patrones } from '../codigo_patrones.js'
 //import { imagenesPatrones } from '../imagenesPatrones.js'
 
+import NativeColorPicker from 'native-color-picker';
 
 import { connect } from 'react-redux';
 
@@ -35,6 +36,9 @@ const screen = Dimensions.get('window');
 const width = screen.width
 const height = screen.height
 
+const colorArray = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff']
+
+
 class FormScreen extends Component {
   static navigationOptions = {
     title: 'Formulario',
@@ -48,6 +52,8 @@ class FormScreen extends Component {
       heightValues: {},
       noteValues: {},
       selectedItem: {},
+      selectedColors:{},
+      order: {},
       loading:true
 
     }
@@ -124,6 +130,22 @@ class FormScreen extends Component {
               autoSort={true}
               FlatListProps={{viewabilityConfig:{viewAreaCoveragePercentThreshold:50 }}}
             />)}
+          <View style={{flex: 1, padding: 15}}>
+            <NativeColorPicker 
+                colors={colorArray}
+                itemSize={30}
+                horizontal
+                columns={10}
+                marker={'checkmark'}
+                selectedColor = {this.state.selectedColors[1]}
+                onSelect = {(color)=>{
+                  let colors = this.state.selectedColors;
+                  colors[1]= color
+                  this.setState({selectedColors:colors})
+                }}
+            />
+          </View>
+          
            <Input
           placeholder='Espesor'
           label= 'Espesor'
@@ -136,6 +158,17 @@ class FormScreen extends Component {
           label='Notas'
           onChangeText={(value) =>{
             this.storeNotes(1, value)
+          }}
+          />
+          <Input
+          placeholder='Posición en la columna'
+          label='Posición en la columna'
+          onChangeText={(value) =>{
+            let order = this.state.order;
+            order[1] = value;
+            this.setState({
+              order
+            })
           }}
           />
       </View>)]
@@ -194,23 +227,51 @@ class FormScreen extends Component {
   setLayers = () => {
     let numLayers = Object.keys(this.state.pickerValues) ;
     let layers = [] ;
+    let layer2 = {} ;
     //console.log("COMENZANDO ++++++++++");
     //console.log(numLayers)
     //console.log(this.state.pickerValues);
     numLayers.map((i)=>{
       //console.log(i)
+      layer2[this.state.order[i]] = {
+        letter : this.state.nameValues[i],
+        lithography: this.state.pickerValues[i].Value,
+        frequency: this.state.heightValues[i],
+        note: this.state.noteValues[i],
+        color: this.state.selectedColors[i],
+      }
+      /*
       layers.push({
         letter : this.state.nameValues[i],
         lithography: this.state.pickerValues[i].Value,
         frequency: this.state.heightValues[i],
-        note: this.state.noteValues[i]
+        note: this.state.noteValues[i],
+        color: this.state.selectedColors[i],
       })
+      */
     })
-    //console.log('-----------------');
+    numLayers = Object.keys(this.state.order) ;
+    numLayers.map((i)=>{
+      //console.log(i)
+      /*
+      layer2[this.state.order[i]] = {
+        letter : this.state.nameValues[i],
+        lithography: this.state.pickerValues[i].Value,
+        frequency: this.state.heightValues[i],
+        note: this.state.noteValues[i],
+        color: this.state.selectedColors[i],
+      }*/
+      
+      layers.push(layer2[i])
+      
+    })
+    console.log('-----------------');
     //console.log(this.state.pickerValues[1]);
-    //console.log('-----------------');
-
     console.log(layers);
+    console.log('-----------------');
+    console.log(layer2);
+
+
     this.props.newColumn(this.state.nombre, layers)
   }
 
@@ -257,6 +318,21 @@ class FormScreen extends Component {
               autoSort={true}
               FlatListProps={{viewabilityConfig:{viewAreaCoveragePercentThreshold:50 }}}
         />
+        <View style={{flex: 1, padding: 15}}>
+            <NativeColorPicker 
+                colors={colorArray}
+                itemSize={30}
+                horizontal
+                columns={10}
+                marker={'checkmark'}
+                selectedColor = {this.state.selectedColors[longitud]}
+                onSelect = {(color)=>{
+                  let colors = this.state.selectedColors;
+                  colors[longitud]= color
+                  this.setState({selectedColors:colors})
+                }}
+            />
+          </View>
             
         <Input
         placeholder='Espesor'
@@ -272,6 +348,19 @@ class FormScreen extends Component {
           this.storeNotes(longitud, value)
         }}
         />
+        <Input
+          placeholder='Posición en la columna'
+          label='Posición en la columna'
+          onChangeText={(value) =>{
+            let order = this.state.order;
+            order[longitud] = value;
+            console.log("IMPRIMO ORDER")
+            console.log(order)
+            this.setState({
+              order
+            })
+          }}
+          />
       </View>
       );
     this.setState({
@@ -294,6 +383,7 @@ class FormScreen extends Component {
           this.setState({nombre: value})
         }}
       />
+
       {this.state.ready && this.state.stratums.map(stratum => stratum)}
       
       <View style={{
@@ -325,6 +415,7 @@ class FormScreen extends Component {
             </Text>
           </View>
         </TouchableHighlight>
+
       </View>
       </ScrollView>
 
