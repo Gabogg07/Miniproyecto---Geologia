@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Miniproyecto",
+    "name": "LithoDex_USB",
     "slug": "Miniproyecto",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -10,7 +10,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logoAndroid.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -23,14 +23,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lithodex.usb"
+    },
+    "android": {
+      "permissions": ["CAMERA"],
+      "package":"com.lithodex.usb",
+        "versionCode":1 , 
+        "icon":"./assets/images/logoAndroid.png"
     }
   },
   "ios": {
-  "supportsTablet": true,
-  "permissions": ["CAMERA"]
+    "supportsTablet": true,
+    "permissions": ["CAMERA"]
   },
   "android": {
-    "permissions": ["CAMERA"]
+    "permissions": ["CAMERA"],
+    "package":"com.lithodex.usb",
+      "versionCode":1 , 
+      "icon":"./assets/images/Logo_Usb.png"
   }
 }

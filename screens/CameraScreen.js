@@ -77,7 +77,7 @@ export default class App extends React.Component {
     await navigator.geolocation.getCurrentPosition(
       position => {
         let location = position;
-        //console.log(location)
+        console.log(location)
         this.setState({ 
           location,
           procesando:false,
@@ -191,27 +191,29 @@ export default class App extends React.Component {
           style={{width:width, height:height*2/4}}
           resizeMode="contain"
       />
-      <TouchableOpacity
-                onPress={this.savePicture}
-            >
-              <Text> Salvar </Text>
-            </TouchableOpacity>
-        {(this.state.location && !this.state.locationError) &&
-            <View>
-            <Text style={{fontSize:10, textAlign:'center' }}> Localizacion </Text>
-            <Text style={{fontSize:10, textAlign:'center' }}> Latitud: {this.state.location.coords.latitude} </Text>
-            <Text style={{fontSize:10, textAlign:'center' }}> Longitud: {this.state.location.coords.longitude} </Text>
-            </View>
-            }
-        {(!this.state.location && this.state.locationError) &&
-            <View>
+      <View style={{ alignItems:'center' }}>
+        <TouchableOpacity
+                  onPress={this.savePicture}
+              >
+                <Text style={{ fontSize: 20, color: "white"}}> Guardar </Text>
+        </TouchableOpacity>
+      </View>
+      {(this.state.location && !this.state.locationError) &&
+          <View>
+            <Text style={{fontSize:15, textAlign:'center' }}> Localizacion </Text>
+            <Text style={{fontSize:15, textAlign:'center' }}> Latitud: {this.state.location.coords.latitude} </Text>
+            <Text style={{fontSize:15, textAlign:'center' }}> Longitud: {this.state.location.coords.longitude} </Text>
+          </View>
+          }
+      {(!this.state.location && this.state.locationError) &&
+          <View>
             <Text style={{fontSize:20, textAlign:'center'}}> {this.state.locationError}</Text>
-            </View>
-            }
+          </View>
+          }
             
     </View>
     ):(
-            <View>
+            <View style = {{ alignItems:'center', justifyContent:'center' }}>
           <TouchableOpacity
                 style={styles.cameraButtons}
                 onPress={this.cameraChange}
@@ -226,7 +228,7 @@ export default class App extends React.Component {
           </Camera>
         
           <TouchableOpacity onPress={this.snap}>
-            <Text style={{ fontSize: 18, color: "white" }}>
+            <Text style={{ fontSize: 20, color: "white", }}>
                   Captura
             </Text>
           </TouchableOpacity>

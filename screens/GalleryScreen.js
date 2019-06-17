@@ -40,13 +40,27 @@ export default class GalleryScreen extends Component {
   fetchStorage = async (key) => {
     try {
         value = await AsyncStorage.getItem(key);
-        if (value !== null) {
+        if (value) {
           this.setState({data_imagenes : JSON.parse(value)})
           this.imagesToCards();
           return JSON.parse(value)
-        } 
+        } else {
+          let dummy = (
+            <View style={{justifyContent:'center', alignItems:'center'}}>
+              <Text>
+                No Hay Imagenes
+              </Text>
+            </View>
+          )
+          this.setState({ 
+            imagenes : dummy, 
+            ready:true
+
+          })
+        }
 
       } catch (error) {
+        console.log(error)
         // Error retrieving data
       }
   }
@@ -61,17 +75,14 @@ export default class GalleryScreen extends Component {
 
   refreshList = () => {
     this.fetchStorage('foto');
-    this.imagesToCards();
+    if(this.state.data_imagenes) this.imagesToCards();
   }
 
   imagesToCards = () => {
-    console.log("*************************")
-    console.log(this.state.data_imagenes);
-    console.log("*************************")
 
-    let i = -3;
+    let i = 0;
     imagenes = this.state.data_imagenes.map((entrada) => {
-      i = i + 3;
+      i = i + 1;
 
       console.log("\n\n");
       console.log(JSON.parse(entrada).uri);
