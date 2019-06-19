@@ -293,17 +293,6 @@ class FormScreen extends Component {
           this.storeNames(longitud, value)
         }}
         />
-        {/*
-        <Picker 
-          selectedValue={(this.state.pickerValues[longitud] && this.state.pickerValues[longitud]) || 601}
-          onValueChange={(value) => {
-          let pick = this.state.pickerValues;
-          pick[longitud] = value;
-          this.setState({pickerValues: pick});
-        }} >
-        {this.state.picker}
-        </Picker> 
-      */}
        <PickerModal
               onSelected={(selected) => {
                 let values = this.state.pickerValues;
@@ -366,9 +355,7 @@ class FormScreen extends Component {
     this.setState({
       stratums
     })
-    console.log(stratums.length);
-    console.log(this.state.nombre)
-    console.log(this.state.patron)
+
   }
 
   render() {
